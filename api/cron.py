@@ -36,7 +36,7 @@ class handler(BaseHTTPRequestHandler):
     async def _run_pipeline(self):
         from agent.scrapers import fetch_all_trends
         from agent.topic_ranker import get_top_5_topics
-        from telegram.keyboard import topic_keyboard
+        from tg_bot.keyboard import topic_keyboard
         from telegram import Bot
 
         trends = fetch_all_trends()

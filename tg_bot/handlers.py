@@ -11,8 +11,8 @@ from telegram.ext import (
 from telegram.constants import ParseMode
 
 from agent.gemini_client import generate_posts, amend_post, more_posts
-from telegram.keyboard import posts_message, topic_keyboard
-from telegram.states import AWAITING_AMEND_INSTRUCTIONS, AWAITING_MORE_INSTRUCTIONS
+from tg_bot.keyboard import posts_message, topic_keyboard
+from tg_bot.states import AWAITING_AMEND_INSTRUCTIONS, AWAITING_MORE_INSTRUCTIONS
 from config.settings import settings
 
 logger = logging.getLogger(__name__)
@@ -83,7 +83,7 @@ async def handle_amend_instructions(update: Update, context: ContextTypes.DEFAUL
     posts[post_index] = revised
     context.user_data["current_posts"] = posts
 
-    from telegram.keyboard import post_actions_keyboard
+    from tg_bot.keyboard import post_actions_keyboard
     keyboard = post_actions_keyboard(post_index, topic)
     await update.message.reply_text(
         f"*Revised Post {post_index + 1}:*\n\n{revised}",

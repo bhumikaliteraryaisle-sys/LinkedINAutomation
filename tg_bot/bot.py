@@ -2,7 +2,7 @@ import logging
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler
 
 from config.settings import settings
-from telegram.handlers import (
+from tg_bot.handlers import (
     handle_topic_selection,
     handle_start,
     handle_manual_topics,

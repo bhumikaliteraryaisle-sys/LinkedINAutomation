@@ -18,7 +18,7 @@ class handler(BaseHTTPRequestHandler):
 
             # Import here to avoid import-time side effects on cold starts
             import asyncio
-            from telegram.bot import get_application
+            from tg_bot.bot import get_application
 
             async def process():
                 app = await get_application()
