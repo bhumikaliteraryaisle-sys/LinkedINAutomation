@@ -39,8 +39,9 @@ def _get_model() -> genai.GenerativeModel:
     if _model is None:
         genai.configure(api_key=settings.GEMINI_API_KEY)
         _model = genai.GenerativeModel(
-            model_name="gemini-2.0-flash",
+            model_name="gemini-1.5-flash",
             system_instruction=SYSTEM_PROMPT,
+            generation_config={"max_output_tokens": 1200, "temperature": 0.8},
         )
     return _model
 
@@ -56,16 +57,14 @@ def generate_posts(topic: str, context: str = "") -> list[str]:
     ctx_line = f"\nAdditional context: {context}" if context else ""
     prompt = f"""Topic: {topic}{ctx_line}
 
-Generate exactly 3 distinct LinkedIn posts about this topic. Each post must have a different angle, hook style, or tone (e.g., one data-driven, one story-based, one opinion-led).
+Write 3 LinkedIn posts. Different angles: data-driven, story-based, opinion-led.
 
-Format your response EXACTLY like this — use these exact separators:
 ---POST 1---
-<post content>
+(post here)
 ---POST 2---
-<post content>
+(post here)
 ---POST 3---
-<post content>
-"""
+(post here)"""
     raw = _call(prompt)
     return _parse_posts(raw)
 
@@ -88,16 +87,14 @@ def more_posts(topic: str, direction: str = "") -> list[str]:
     dir_line = f"\nDirection / style hint: {direction}" if direction else ""
     prompt = f"""Topic: {topic}{dir_line}
 
-Generate 3 completely fresh LinkedIn post variants on this topic. Make them notably different from typical posts — try unexpected angles, contrarian takes, or vivid opening lines.
+Write 3 fresh LinkedIn posts — unexpected angles, contrarian takes, vivid hooks.
 
-Format your response EXACTLY like this:
 ---POST 1---
-<post content>
+(post here)
 ---POST 2---
-<post content>
+(post here)
 ---POST 3---
-<post content>
-"""
+(post here)"""
     raw = _call(prompt)
     return _parse_posts(raw)
 
