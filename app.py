@@ -15,7 +15,16 @@ app = Flask(__name__)
 
 def _run(coro):
     """Run an async coroutine from a sync Flask route."""
-    return asyncio.get_event_loop().run_until_complete(coro)
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        loop = None
+    if loop and loop.is_running():
+        import concurrent.futures
+        with concurrent.futures.ThreadPoolExecutor() as pool:
+            future = pool.submit(asyncio.run, coro)
+            return future.result()
+    return asyncio.run(coro)
 
 
 # ── routes ───────────────────────────────────────────────────────────────────
@@ -81,3 +90,7 @@ def cron():
     except Exception as e:
         logger.exception("Cron error: %s", e)
         return jsonify({"ok": False, "error": str(e)}), 500
+
+
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)
