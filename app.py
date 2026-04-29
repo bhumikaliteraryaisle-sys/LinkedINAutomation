@@ -30,7 +30,7 @@ def health():
     return jsonify({"status": "LinkedIn Agent is running"})
 
 
-@app.route("/api/webhook", methods=["POST"])
+@app.route("/webhook", methods=["POST"])
 def webhook():
     """Receives Telegram updates via webhook."""
     try:
@@ -51,7 +51,7 @@ def webhook():
         return jsonify({"ok": False, "error": str(e)}), 500
 
 
-@app.route("/api/cron", methods=["GET"])
+@app.route("/cron", methods=["GET"])
 def cron():
     """Triggered by Vercel Cron at 9AM IST — sends 5 topic buttons to Telegram."""
     from config.settings import settings
