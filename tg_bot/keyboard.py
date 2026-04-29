@@ -4,7 +4,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 def topic_keyboard(topics: list[str]) -> InlineKeyboardMarkup:
     """One button per topic, each on its own row."""
     rows = [
-        [InlineKeyboardButton(f"📌 {t[:60]}", callback_data=f"topic:{t[:60]}")]
+        [InlineKeyboardButton(f"📌 {t[:57]}", callback_data=f"topic:{t[:57]}")]
         for t in topics
     ]
     return InlineKeyboardMarkup(rows)
