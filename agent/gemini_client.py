@@ -39,9 +39,9 @@ def _get_model() -> genai.GenerativeModel:
     if _model is None:
         genai.configure(api_key=settings.GEMINI_API_KEY)
         _model = genai.GenerativeModel(
-            model_name="gemini-1.5-flash",
+            model_name="gemini-1.5-flash-8b",
             system_instruction=SYSTEM_PROMPT,
-            generation_config={"max_output_tokens": 1200, "temperature": 0.8},
+            generation_config={"max_output_tokens": 900, "temperature": 0.8},
         )
     return _model
 
