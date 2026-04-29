@@ -14,17 +14,13 @@ app = Flask(__name__)
 # ── helpers ──────────────────────────────────────────────────────────────────
 
 def _run(coro):
-    """Run an async coroutine from a sync Flask route."""
+    """Run an async coroutine from a sync Flask thread."""
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
     try:
-        loop = asyncio.get_running_loop()
-    except RuntimeError:
-        loop = None
-    if loop and loop.is_running():
-        import concurrent.futures
-        with concurrent.futures.ThreadPoolExecutor() as pool:
-            future = pool.submit(asyncio.run, coro)
-            return future.result()
-    return asyncio.run(coro)
+        return loop.run_until_complete(coro)
+    finally:
+        loop.close()
 
 
 # ── routes ───────────────────────────────────────────────────────────────────
